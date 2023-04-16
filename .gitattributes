@@ -5,37 +5,6 @@ Name VARCHAR (128) NOT NULL,
 Version VARCHAR(128) NOT NULL
 )
 
-CREATE TABLE Game
-(
-GameID INT IDENTITY PRIMARY KEY,
-PlatformID INT REFERENCES Platform(PlatformID)
-)
-
-CREATE TABLE Player (
-  PlayerID INT PRIMARY KEY,
-  Username VARCHAR(20) NOT NULL,
-  Playtime FLOAT NOT NULL,
-  RegionID INT NOT NULL,
-  PlatformID INT NOT NULL
-);
-
-CREATE TABLE Feedback
-(
-FeedbackID INT IDENTITY PRIMARY KEY,
-PlayerID int REFERENCES Player(PlayerID) NOT NULL,
-GameID int REFERENCES Game (GameID) NOT NULL,
-Score INT,
-Text VARCHAR(1000)
-)
-
-CREATE TABLE PlayProgress
-(
-ProgressID INT IDENTITY PRIMARY KEY,
-PlayerID int REFERENCES Player(PlayerID) NOT NULL,
-GameID int REFERENCES Game (GameID) NOT NULL,
-Progress INT NOT NULL
-)
-
 CREATE TABLE Region
 (
 RegionID INT IDENTITY PRIMARY KEY,
@@ -43,20 +12,46 @@ Country VARCHAR (128) NOT NULL,
 Province VARCHAR(128),
 )
 
-INSERT INTO dbo.PlayProgress(Progress)
-VALUES 
-	(73),
-(28),
-(68),
-(88),
-(54),
-(10),
-(96),
-(30),
-(35),
-(7);
+CREATE TABLE Game
+(
+GameID INT IDENTITY PRIMARY KEY,
+GameName VARCHAR(500) NOT NULL
+)
 
-INSERT INTO dbo.Region ( Province)
+CREATE TABLE GameCompatability
+(
+  PlatformID INTO REFERENCES Platform(PlatformID),
+  GameNames VARCHAR(500)
+)
+
+
+CREATE TABLE Player (
+  PlayerID INT IDENTITY PRIMARY KEY,
+  Username VARCHAR(20) NOT NULL,
+  Playtime FLOAT NOT NULL,
+  RegionID int FOREIGN KEY REFERENCES Region(RegionID) NOT NULL,
+  PlatformID int FOREIGN KEY REFERENCES Platform(PlatformID) NOT NULL
+);
+
+CREATE TABLE Feedback
+(
+FeedbackID INT IDENTITY PRIMARY KEY,
+PlayerID int FOREIGN KEY REFERENCES Player(PlayerID) NOT NULL,
+GameID int FOREIGN KEY REFERENCES Game (GameID) NOT NULL,
+Score INT,
+Text VARCHAR(1000)
+)
+
+CREATE TABLE PlayProgress
+(
+ProgressID INT IDENTITY PRIMARY KEY,
+PlayerID int FOREIGN KEY REFERENCES Player(PlayerID) NOT NULL,
+GameID int FOREIGN KEY REFERENCES Game (GameID) NOT NULL,
+Progress INT NOT NULL
+)
+
+
+INSERT INTO dbo.Region (Country,Province)
 VALUES 
 ('US', 'Alabama'),
 ('US', 'Alaska'),
@@ -69,6 +64,7 @@ VALUES
 ('Us', 'Georgia'),
 ('US', 'Utah')
 
+
 INSERT INTO dbo.Platform(Name,Version)
 VALUES
 ('Xbox',001),
@@ -78,23 +74,62 @@ VALUES
 ('Wii',067),
 ('Switch',021),
 ('Gamecube',091),
-('Andriod',083)
-('IOS',083)
+('Andriod',083),
+('IOS',083),
 ('MAC',321)
 
-INSERT INTO dbo.Player(Username,Playtime)
+
+INSERT INTO dbo.Player(Username,Playtime,PlatformID,RegionID)
 VALUES
-('WackyTaco692',12),
-('TheBo0sh',2),
-('LinuxUser', 150),
-('YourMaternalGuardian',312),
-('Zoink231',4),
-('MasterCactus',2),
-('YoungWifi',36),
-('Personelle',198),
-('wingDing32',50),
-('DoingWork',22)
+('WackyTaco692',12,2,1),
+('TheBo0sh',2,3,2),
+('LinuxUser', 150,4,4),
+('YourMaternalGuardian',312,1,4),
+('Zoink231',4,2,9),
+('MasterCactus',2,2,6),
+('YoungWifi',36,2,9),
+('Personelle',198,5,2),
+('wingDing32',50,5,2),
+('DoingWork',22,8,7)
 
 
+INSERT INTO dbo.Game (GameName)
+VALUES 
+('StarBattle'),
+('ShootBang'),
+('BigExplosion'),
+('DoingTheThing'),
+('BigPlays'),
+('EconMajor'),
+('GolfProShooter'),
+('BattleZing'),
+('ZoomBinis'),
+('FirstFrontier')
 
 
+INSERT INTO dbo.PlayProgress(Progress,PlayerID,GameID)
+VALUES 
+	(73,1,5),
+(28,2,3),
+(68,3,8),
+(88,4,9),
+(54,5,2),
+(10,6,7),
+(96,7,1),
+(30,8,1),
+(35,9,10),
+(7,10,1);
+
+
+Insert INTO dbo.Feedback(Score,Text,PlayerID,GameID)
+VALUES
+(10,'8 years in and it just hit me I"ve never left a review.Good game. Will not hold your hand.NOT potato-friendly.Come, embrace the suck.',1,5),
+(2,'i can"t afford diablo 4',2,3),
+(3,'Need to use an item filter',3,8),
+(2, 'The chat filter keeps being bugged',4,9),
+(10,'Level 10 is absolutley perfect',5,2),
+(1, 'Game sucks didn"t play',6,7),
+(1, 'Please fix the jumping angle on skyboink. They"re absolute cheeks',7,1),
+(9, 'Everything is pretty good, but some graphic update on level 6 would be nice',8,10),
+(3, 'Level is good but the trade feature is really slow going through the animation',9,1),
+(8, 'Good Game',10,3)
