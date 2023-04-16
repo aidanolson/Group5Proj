@@ -1,2 +1,70 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+CREATE TABLE Platform
+(
+PlatformID INT IDENTITY PRIMARY KEY,
+Name VARCHAR (128) NOT NULL,
+Version VARCHAR(128) NOT NULL
+)
+
+CREATE TABLE Game
+(
+GameID INT IDENTITY PRIMARY KEY,
+PlatformID INT REFERENCES Platform(PlatformID)
+)
+
+CREATE TABLE Player (
+  PlayerID INT PRIMARY KEY,
+  Username VARCHAR(20) NOT NULL,
+  Playtime FLOAT NOT NULL,
+  RegionID INT NOT NULL,
+  PlatformID INT NOT NULL
+);
+
+CREATE TABLE Feedback
+(
+FeedbackID INT IDENTITY PRIMARY KEY,
+PlayerID int REFERENCES Player(PlayerID) NOT NULL,
+GameID int REFERENCES Game (GameID) NOT NULL,
+Score INT,
+Text VARCHAR(1000)
+)
+
+CREATE TABLE PlayProgress
+(
+ProgressID INT IDENTITY PRIMARY KEY,
+PlayerID int REFERENCES Player(PlayerID) NOT NULL,
+GameID int REFERENCES Game (GameID) NOT NULL,
+Progress INT NOT NULL
+)
+
+CREATE TABLE Region
+(
+RegionID INT IDENTITY PRIMARY KEY,
+Country VARCHAR (128) NOT NULL,
+Province VARCHAR(128),
+)
+
+INSERT INTO dbo.PlayProgress(Progress)
+VALUES 
+	(73),
+(28),
+(68),
+(88),
+(54),
+(10),
+(96),
+(30),
+(35),
+(7);
+
+INSERT INTO dbo.Region ( Province)
+VALUES 
+('US', 'Alabama'),
+('US', 'Alaska'),
+('US', 'Arizona'),
+('US', 'Arkansas'),
+('US', 'California'),
+('US', 'Connecticut'),
+('US', 'Delaware'),
+('US', 'Florida'),
+('Us', 'Georgia'),
+('US', 'Utah')
