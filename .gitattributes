@@ -133,3 +133,34 @@ VALUES
 (9, 'Everything is pretty good, but some graphic update on level 6 would be nice',8,10),
 (3, 'Level is good but the trade feature is really slow going through the animation',9,1),
 (8, 'Good Game',10,3)
+
+// Function for average Playtime per game
+
+Select PlayProgress.GameID, AVG(Player.Playtime) AS AveragePlaytime
+From Player
+INNER JOIN PlayProgress
+ON  Player.PlayerID = PlayProgress.PlayerID
+GROUP BY PlayProgress.GameID
+
+// Function for averge Playtime per Platform
+
+Select Player.PlatformID, AVG(Player.Playtime) AS AveragePlaytime
+From Player
+GROUP BY Player.PlatformID
+
+//Function for Average Feedback Score by game
+
+Select Feedback.GameID, AVG(Feedback.Score) AS AverageScore
+From Feedback
+GROUP BY Feedback.GameID
+
+//Function for total playtime by region per game
+
+
+
+
+
+
+
+
+
