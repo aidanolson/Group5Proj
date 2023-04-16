@@ -68,3 +68,33 @@ VALUES
 ('US', 'Florida'),
 ('Us', 'Georgia'),
 ('US', 'Utah')
+
+INSERT INTO dbo.Platform(Name,Version)
+VALUES
+('Xbox',001),
+('Windows',002),
+('Linux', 012),
+('Playstation',003),
+('Wii',067),
+('Switch',021),
+('Gamecube',091),
+('Andriod',083)
+('IOS',083)
+('MAC',321)
+
+INSERT INTO dbo.Player(Username,Playtime)
+VALUES
+('WackyTaco692',12),
+('TheBo0sh',2),
+('LinuxUser', 150),
+('YourMaternalGuardian',312),
+('Zoink231',4),
+('MasterCactus',2),
+('YoungWifi',36),
+('Personelle',198),
+('wingDing32',50),
+('DoingWork',22)
+
+
+
+
