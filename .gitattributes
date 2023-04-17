@@ -156,11 +156,51 @@ GROUP BY Feedback.GameID
 
 //Function for total playtime by region per game
 
+Select Player.RegionID, PlayProgress.GameID, SUM(Player.Playtime) AS TotalPlaytime
+From Player
+INNER JOIN PlayProgress
+ON  Player.PlayerID = PlayProgress.PlayerID
+GROUP BY PlayProgress.GameID, Player.RegionID
+Order BY RegionID ASC, GameID ASC, TotalPlaytime DESC;
+
+//Average Feedback by Platform
+
+Select Player.PlatformID, AVG(Feedback.Score) AS AverageFeedback
+From Player
+Inner Join Feedback
+On Player.PlayerId = Feedback.PlayerID
+Group BY Player.PlatformID
+
+// Average Feedback Score from Player that have hgher than 90% Completion and above average Playtime for each game
+
+Select PlayProgress.PlayerID, SUM(Player.Playtime) AS Playtime, AVG(Feedback.Score) AS AverageFeedback
+From PlayProgress
+    JOIN Player
+        on Player.PlayerID = PlayProgress.PlayerID
+    JOIN Feedback
+        on Feedback.PlayerID = PlayProgress.PlayerID
+WHERE Player.Playtime <50
+AND PlayProgress.Progress >= 90
+GROUP BY PlayProgress.PlayerID
 
 
+// Average Feedback Score from players that have less than 20% completion and blow and above average Playtime for each Game
 
+Select PlayProgress.PlayerID, SUM(Player.Playtime) AS Playtime, AVG(Feedback.Score) AS AverageFeedback
+From PlayProgress
+    JOIN Player
+        on Player.PlayerID = PlayProgress.PlayerID
+    JOIN Feedback
+        on Feedback.PlayerID = PlayProgress.PlayerID
+WHERE Player.Playtime <50
+AND PlayProgress.Progress >= 20
+GROUP BY PlayProgress.PlayerID
 
+// Play Time by country for the top 10 games and the average feedback score for each
 
-
+Select Player.RegionID, AVG(Feedback.score)
+From Region
+  JOIN Feedback
+    on Feedback.Player
 
 
